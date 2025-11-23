@@ -1,0 +1,14 @@
+server:
+  port: 9006
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: coupon-service-group
+      key-deserializer: org.apache.kafka.common.serialization.StringSerializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonSerializer
+      auto-offset-reset: earliest
+      enable-auto-commit: true
+    listener:
+      ack-mode: record
