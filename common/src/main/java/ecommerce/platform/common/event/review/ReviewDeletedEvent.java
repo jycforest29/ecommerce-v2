@@ -5,6 +5,8 @@ import lombok.Builder;
 public class ReviewDeletedEvent extends ReviewEvent {
     public static final String TOPIC = "review.events.deleted";
 
+    protected ReviewDeletedEvent() {}
+
     @Builder
     public ReviewDeletedEvent(Long productId, int averageScore) {
         super(productId, averageScore);

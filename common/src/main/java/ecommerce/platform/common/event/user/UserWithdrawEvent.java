@@ -5,6 +5,8 @@ import lombok.Builder;
 public class UserWithdrawEvent extends UserEvent {
     public static final String TOPIC = "user.events.withdrew";
 
+    protected UserWithdrawEvent() {}
+
     @Builder
     public UserWithdrawEvent(Long userId) {
         super(userId);

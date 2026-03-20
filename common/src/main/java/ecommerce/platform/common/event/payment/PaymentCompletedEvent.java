@@ -12,6 +12,8 @@ public class PaymentCompletedEvent extends Event {
     private Long paymentId;
     private PaymentMethod paymentMethod;
 
+    protected PaymentCompletedEvent() {}
+
     @Builder
     PaymentCompletedEvent(Long orderId, Long paymentId, PaymentMethod paymentMethod) {
         super();

@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import ecommerce.platform.common.constants.Category;
+
 import java.util.List;
 
 @Getter
@@ -14,6 +16,8 @@ public class OrderCreatedEvent extends Event {
     private Long orderId;
     private Long userId;
     private List<OrderItemInfo> orderItemInfos;
+
+    protected OrderCreatedEvent() {}
 
     @Builder
     OrderCreatedEvent(Long orderId, Long userId, List<OrderItemInfo> orderItemInfos) {
@@ -33,5 +37,10 @@ public class OrderCreatedEvent extends Event {
     public static class OrderItemInfo {
         private Long productId;
         private Long productOptionId;
+        private String productName;
+        private Long imageId;
+        private Category category;
+
+        protected OrderItemInfo() {}
     }
 }

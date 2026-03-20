@@ -29,6 +29,7 @@ public class OrderManageService {
     public OrderCreateResponse createOrder(Long userId, OrderCreateRequest orderCreateRequest) {
         Order order = Order.builder()
                 .userId(userId)
+                .paymentMethod(orderCreateRequest.paymentMethod())
                 .totalQuantity(orderCreateRequest.getQuantity())
                 .totalPriceSnapshot(orderCreateRequest.getPriceSnapshot())
                 .build();

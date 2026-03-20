@@ -5,6 +5,8 @@ import lombok.Builder;
 public class ReviewCreatedEvent extends ReviewEvent {
     public static final String TOPIC = "review.events.created";
 
+    protected ReviewCreatedEvent() {}
+
     @Builder
     public ReviewCreatedEvent(Long productId, int averageScore) {
         super(productId, averageScore);

@@ -9,11 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @Modifying
     @Transactional
-    @Query("UPDATE Product p SET p.stockCount = p.stockCount + :stockDelta WHERE p.id = :productId")
-    void updateStockCountByProductId(Long productId, int stockDelta);
-
-    @Modifying
-    @Transactional
-    @Query("UPDATE s.reviewCount SET s.stockCount = s.stockCount + :reviewDelta WHERE s.productId = :productId")
+    @Query("UPDATE Product p SET p.reviewCount = p.reviewCount + :reviewDelta WHERE p.id = :productId")
     void updateReviewCountByProductId(Long productId, int reviewDelta);
 }

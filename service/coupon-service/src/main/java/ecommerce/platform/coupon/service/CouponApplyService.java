@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,7 +46,7 @@ public class CouponApplyService {
                 .sum();
         int discountAmount = coupon.calculateDiscountAmount(orderItems);
 
-        return CouponApplyResponse.from(coupon.getCreatedAt(), totalPrice, discountAmount);
+        return CouponApplyResponse.from(Instant.now(), totalPrice, discountAmount);
     }
 
     @Transactional

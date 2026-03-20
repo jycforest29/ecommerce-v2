@@ -1,6 +1,6 @@
 package ecommerce.platform.user.jwt.util;
 
-import ecommerce.platform.user.util.TimeConstants;
+import ecommerce.platform.common.util.TimeConstants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -54,7 +54,7 @@ public class JwtTokenGenerator {
         Claims claims = Jwts.parser()
                 .verifyWith((SecretKey) key)
                 .build()
-                .parseEncryptedClaims(token)
+                .parseSignedClaims(token)
                 .getPayload();
 
         Collection<? extends GrantedAuthority> authorities = Arrays
@@ -74,7 +74,7 @@ public class JwtTokenGenerator {
             Jwts.parser()
                     .verifyWith((SecretKey) key)
                     .build()
-                    .parseEncryptedClaims(token);
+                    .parseSignedClaims(token);
             return true;
         } catch (Exception e) {
             return false;

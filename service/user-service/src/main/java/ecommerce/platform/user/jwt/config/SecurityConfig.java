@@ -42,7 +42,7 @@ public class SecurityConfig {
                         authorize ->
                                 authorize.requestMatchers("/api/v1/members/join")
                                         .permitAll()
-                                        .requestMatchers("/api/v1/memvers/login")
+                                        .requestMatchers("/api/v1/members/login")
                                         .permitAll()
                                         .anyRequest()
                                         .authenticated())

@@ -33,10 +33,14 @@ public class CouponAppliedEvent extends Event {
         private int priceAfterCouponApplied;
         private int discountRate;
 
+        protected OrderItemInfo() {}
+
         public boolean matches(Long productId, Long optionId) {
             return this.productId.equals(productId) && this.optionId.equals(optionId);
         }
     }
+
+    protected CouponAppliedEvent() {}
 
     @Builder
     CouponAppliedEvent(Long orderId, Long couponId, int discountRate, int discountAmount, List<CouponAppliedEvent.OrderItemInfo> orderItemInfos) {

@@ -12,6 +12,8 @@ public class PaymentCompletedFailedEvent extends Event {
     private Long paymentId;
     private String reason;
 
+    protected PaymentCompletedFailedEvent() {}
+
     @Builder
     PaymentCompletedFailedEvent(Long orderId, Long paymentId, String reason) {
         super();

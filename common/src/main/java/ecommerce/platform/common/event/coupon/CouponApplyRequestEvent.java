@@ -27,7 +27,11 @@ public class CouponApplyRequestEvent extends Event {
         private Long optionId;
         private int price;
         private int quantity;
+
+        protected OrderItemInfo() {}
     }
+
+    protected CouponApplyRequestEvent() {}
 
     @Builder
     CouponApplyRequestEvent(Long orderId, Long userId, List<OrderItemInfo> orderItemInfos) {

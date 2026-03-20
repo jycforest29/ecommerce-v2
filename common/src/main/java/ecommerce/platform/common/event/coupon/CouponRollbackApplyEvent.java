@@ -10,6 +10,8 @@ public class CouponRollbackApplyEvent extends Event {
 
     private Long orderId;
 
+    protected CouponRollbackApplyEvent() {}
+
     @Builder
     CouponRollbackApplyEvent(Long orderId) {
         super();

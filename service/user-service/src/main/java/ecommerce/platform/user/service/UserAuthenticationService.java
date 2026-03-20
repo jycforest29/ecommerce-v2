@@ -1,9 +1,9 @@
 package ecommerce.platform.user.service;
 
-import ecommerce.platform.user.dto.UserJoinRequest;
-import ecommerce.platform.user.dto.UserLoginRequest;
-import ecommerce.platform.user.exception.UserAlreadyExistsException;
-import ecommerce.platform.user.entity.UserEntity;
+import ecommerce.platform.user.dto.MemberJoinRequest;
+import ecommerce.platform.user.dto.MemberLoginRequest;
+import ecommerce.platform.user.exception.MemberAlreadyExistsException;
+import ecommerce.platform.user.entity.Member;
 import ecommerce.platform.user.repository.LogoutTokenRepository;
 import ecommerce.platform.user.repository.UserRepository;
 import ecommerce.platform.user.vo.Email;
@@ -37,30 +37,29 @@ public class UserAuthenticationService {
     private final PasswordManager passwordManager;
 
     @Transactional
-    public String join(UserJoinRequest userJoinRequest) {
-        String username = userJoinRequest.username();
-        String password = userJoinRequest.password();
+    public String join(MemberJoinRequest memberJoinRequest) {
+        String username = memberJoinRequest.username();
+        String password = memberJoinRequest.password();
 
         if (!userRepository.existsByUserName(username)) {
             Password.validateRawPassword(password);
             String encryptedPassword = passwordManager.encrypt(password);
-            UserEntity userEntity = UserEntity.builder()
+            Member member = Member.builder()
                             .userName(new UserName(username))
                             .password(new Password(encryptedPassword))
-                            .email(new Email(userJoinRequest.email()))
-                            .phoneNumber(new PhoneNumber(userJoinRequest.phoneNumber()))
+                            .email(new Email(memberJoinRequest.email()))
+                            .phoneNumber(new PhoneNumber(memberJoinRequest.phoneNumber()))
                             .build();
 
-            userRepository.saveAndFlush(userEntity);
+            userRepository.saveAndFlush(member);
 
             return login(username, password);
         }
-        throw new UserAlreadyExistsException();
+        throw new MemberAlreadyExistsException();
     }
 
-    @Transactional
-    public String login(UserLoginRequest userLoginRequest) {
-        return login(userLoginRequest.userName(), userLoginRequest.password());
+    public String login(MemberLoginRequest memberLoginRequest) {
+        return login(memberLoginRequest.userName(), memberLoginRequest.password());
     }
 
     private String login(String userName, String password) {

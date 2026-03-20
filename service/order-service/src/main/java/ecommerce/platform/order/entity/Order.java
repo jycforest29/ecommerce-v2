@@ -54,8 +54,9 @@ public class Order {
     private PaymentMethod paymentMethod;
 
     @Builder
-    public Order(Long userId, int totalQuantity, int totalPriceSnapshot) {
+    public Order(Long userId, PaymentMethod paymentMethod, int totalQuantity, int totalPriceSnapshot) {
         this.userId = userId;
+        this.paymentMethod = paymentMethod;
         this.createdAt = Instant.now();
         this.totalQuantity = totalQuantity;
         this.totalPriceSnapshot = totalPriceSnapshot;

@@ -11,6 +11,8 @@ public class PaymentCancelledEvent extends Event {
     private Long orderId;
     private Long paymentId;
 
+    protected PaymentCancelledEvent() {}
+
     @Builder
     PaymentCancelledEvent(Long orderId, Long paymentId) {
         super();

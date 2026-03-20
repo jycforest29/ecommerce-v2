@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ProductEventHandler {
 
-    private final ProductCommandService productCommandService;
+    private final ProductManageService productCommandService;
 
     @Transactional
     public void handle(Event event) {

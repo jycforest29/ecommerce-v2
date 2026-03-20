@@ -11,6 +11,8 @@ public class RefundCompletedEvent extends Event {
     private Long orderId;
     private Long paymentId;
 
+    protected RefundCompletedEvent() {}
+
     @Builder
     RefundCompletedEvent(Long orderId, Long paymentId) {
         super();

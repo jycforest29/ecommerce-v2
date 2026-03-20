@@ -13,6 +13,8 @@ public class StockDeductRequestEvent extends Event {
     private Long orderId;
     private List<StockDeductRequestEvent.StockInfo> stockInfos;
 
+    protected StockDeductRequestEvent() {}
+
     @Builder
     StockDeductRequestEvent(Long orderId, List<StockDeductRequestEvent.StockInfo> stockInfos) {
         super();
@@ -30,5 +32,8 @@ public class StockDeductRequestEvent extends Event {
     public static class StockInfo {
         private Long productId;
         private Long optionId;
+        private int quantity;
+
+        protected StockInfo() {}
     }
 }

@@ -5,6 +5,8 @@ import lombok.Builder;
 public class UserJoinEvent extends UserEvent {
     public static final String TOPIC = "user.events.joined";
 
+    protected UserJoinEvent() {}
+
     @Builder
     public UserJoinEvent(Long userId) {
         super(userId);

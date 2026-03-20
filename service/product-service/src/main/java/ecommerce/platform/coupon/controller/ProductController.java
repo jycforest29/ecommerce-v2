@@ -36,7 +36,7 @@ public class ProductController {
             @Login Long userId,
             @PathVariable Long productId,
             @Valid @RequestBody ProductUpdateRequest productUpdateRequest) {
-        ProductUpdateResponse productUpdateResponse = productCommandService.modifyProduct(productId, productUpdateRequest);
+        ProductUpdateResponse productUpdateResponse = productManageService.modifyProduct(productId, userId, productUpdateRequest);
         return ResponseEntity.ok(productUpdateResponse);
     }
 
@@ -56,7 +56,7 @@ public class ProductController {
     public ResponseEntity<Void> deleteProduct(
             @Login Long userId,
             @PathVariable Long productId) {
-        productCommandService.deleteProduct(productId, userId);
+        productManageService.deleteProduct(productId, userId);
         return ResponseEntity.ok().build();
     }
 }
