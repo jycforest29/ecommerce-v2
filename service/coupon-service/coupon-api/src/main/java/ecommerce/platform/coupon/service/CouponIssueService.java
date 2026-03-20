@@ -43,13 +43,25 @@ public class CouponIssueService {
             throw new CouponAlreadyIssuedException(promotionId, userId);
 
         String key = RedisKeyConverterUtil.toKey(promotion);
-        Long remaining = couponRedisRepository.opsForValue().decrement(key);
-        if (remaining == null || remaining < 0) {
-            couponRedisRepository.opsForValue().increment(key);
-            throw new CouponSoldOutException();
-        }
+        int rate;
 
-        int rate = promotion.resolveDiscountRate();
+        if (promotion.isRandomDiscount()) {
+            // 랜덤 쿠폰: RPUSH로 적재된 리스트에서 LPOP으로 꺼냄
+            String listKey = key + "::random";
+            Object popped = couponRedisRepository.opsForList().leftPop(listKey);
+            if (popped == null) {
+                throw new CouponSoldOutException();
+            }
+            rate = (int) popped;
+        } else {
+            // 고정 할인: DECR로 재고 차감
+            Long remaining = couponRedisRepository.opsForValue().decrement(key);
+            if (remaining == null || remaining < 0) {
+                couponRedisRepository.opsForValue().increment(key);
+                throw new CouponSoldOutException();
+            }
+            rate = promotion.getDiscountRate();
+        }
         Coupon coupon = Coupon.of(promotion, userId, rate);
         couponRepository.save(coupon);
 

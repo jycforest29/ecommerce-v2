@@ -5,6 +5,7 @@ import ecommerce.platform.coupon.dto.PromotionRegisterRequest;
 import ecommerce.platform.coupon.dto.PromotionRegisterResponse;
 import ecommerce.platform.coupon.entity.Promotion;
 import ecommerce.platform.coupon.repository.PromotionRepository;
+import ecommerce.platform.coupon.util.RandomUtil;
 import ecommerce.platform.coupon.util.RedisKeyConverterUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -22,7 +23,17 @@ public class PromotionManageService {
         Promotion promotion = promotionRegisterRequest.toEntity();
         promotionRepository.save(promotion);
         String key = RedisKeyConverterUtil.toKey(promotion);
-        couponRedisRepository.opsForValue().set(key, promotion.getQuantity());
+
+        if (promotion.isRandomDiscount()) {
+            String listKey = key + "::random";
+            for (int i = 0; i < promotion.getQuantity(); i++) {
+                int rate = RandomUtil.random(promotion.getMinDiscountRate(), promotion.getMaxDiscountRate() + 1);
+                couponRedisRepository.opsForList().rightPush(listKey, rate);
+            }
+        } else {
+            couponRedisRepository.opsForValue().set(key, promotion.getQuantity());
+        }
+
         return PromotionRegisterResponse.from(promotion);
     }
 
@@ -31,6 +42,7 @@ public class PromotionManageService {
         Promotion promotion = EntityFinder.findEntity(promotionRepository, promotionId);
         String key = RedisKeyConverterUtil.toKey(promotion);
         couponRedisRepository.delete(key);
+        couponRedisRepository.delete(key + "::random");
         promotionRepository.delete(promotion);
     }
 }
