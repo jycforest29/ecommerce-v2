@@ -94,14 +94,20 @@ public class CouponApplyService {
     }
 
     private void applyInternal(Coupon coupon) {
+        int updatedRows = couponRepository.applyConditionally(coupon.getCouponId());
+        if (updatedRows == 0) {
+            throw new CouponFailedToApplyException();
+        }
         var couponLog = CouponLogFactory.apply(coupon);
         couponLogRepository.save(couponLog);
-        coupon.apply();
     }
 
     private void rollbackInternal(Coupon coupon) {
+        int updatedRows = couponRepository.rollbackApplyConditionally(coupon.getCouponId());
+        if (updatedRows == 0) {
+            throw new CouponFailedToRollbackApplyException();
+        }
         var couponLog = CouponLogFactory.applyCancel(coupon);
         couponLogRepository.save(couponLog);
-        coupon.rollbackApply();
     }
 }
