@@ -4,6 +4,9 @@ COPY pom.xml ./pom.xml
 COPY common ./common
 COPY service/pom.xml ./service/pom.xml
 COPY service/coupon-service/pom.xml ./service/coupon-service/pom.xml
+COPY service/coupon-service/coupon-core/pom.xml ./service/coupon-service/coupon-core/pom.xml
+COPY service/coupon-service/coupon-api/pom.xml ./service/coupon-service/coupon-api/pom.xml
+COPY service/coupon-service/coupon-worker/pom.xml ./service/coupon-service/coupon-worker/pom.xml
 COPY service/notification-service/pom.xml ./service/notification-service/pom.xml
 COPY service/order-service/pom.xml ./service/order-service/pom.xml
 COPY service/payment-service/pom.xml ./service/payment-service/pom.xml

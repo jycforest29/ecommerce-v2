@@ -1,15 +1,13 @@
-package ecommerce.platform.coupon;
+package ecommerce.platform.notification;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.cache.annotation.EnableCaching;
 
 @SpringBootApplication(scanBasePackages = "ecommerce.platform")
 @EntityScan("ecommerce.platform")
-@EnableCaching
-public class ProductServiceApplication {
+public class NotificationServiceApplication {
     public static void main(String[] args) {
-        SpringApplication.run(ProductServiceApplication.class, args);
+        SpringApplication.run(NotificationServiceApplication.class, args);
     }
 }

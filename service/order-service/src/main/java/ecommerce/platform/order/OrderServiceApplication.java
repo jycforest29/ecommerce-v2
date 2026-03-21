@@ -1,15 +1,15 @@
-package ecommerce.platform.coupon;
+package ecommerce.platform.order;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
+@EnableScheduling
 @SpringBootApplication(scanBasePackages = "ecommerce.platform")
 @EntityScan("ecommerce.platform")
-@EnableCaching
-public class ProductServiceApplication {
+public class OrderServiceApplication {
     public static void main(String[] args) {
-        SpringApplication.run(ProductServiceApplication.class, args);
+        SpringApplication.run(OrderServiceApplication.class, args);
     }
 }

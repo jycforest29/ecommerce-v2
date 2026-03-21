@@ -30,7 +30,7 @@ public class CouponIssueService {
     @Transactional
     public void issueWelcomeCoupon(Long userId) {
         if (couponRepository.existsByUserId(userId)) return;
-        Promotion promotion = promotionRepository.findByName(Promotion.WELCOME_COUPON)
+        Promotion promotion = promotionRepository.findByPromotionName(Promotion.WELCOME_COUPON)
                 .orElseThrow(() -> new EntityNotFoundException());
         issuePromotion(promotion.getPromotionId(), userId);
     }

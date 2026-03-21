@@ -1,4 +1,4 @@
-package ecommerce.platform.ranking.config;
+package ecommerce.platform.review.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,16 +18,6 @@ public class RedisConfig {
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
         redisTemplate.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
-        redisTemplate.afterPropertiesSet();
-        return redisTemplate;
-    }
-
-    @Bean
-    public RedisTemplate<String, Long> longRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
-        RedisTemplate<String, Long> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(redisConnectionFactory);
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
         redisTemplate.afterPropertiesSet();
         return redisTemplate;
     }

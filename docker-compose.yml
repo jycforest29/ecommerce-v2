@@ -122,12 +122,33 @@ services:
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
       PG_MOCK_BASE_URL: http://payment-service:9003
 
-  coupon-service:
+  coupon-api:
     build:
       context: .
-      dockerfile: service/coupon-service/Dockerfile
+      dockerfile: service/coupon-service/coupon-api/Dockerfile
     ports:
       - "9004:9004"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/coupon_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+
+  coupon-worker:
+    build:
+      context: .
+      dockerfile: service/coupon-service/coupon-worker/Dockerfile
+    ports:
+      - "9010:9010"
     depends_on:
       mysql:
         condition: service_healthy

@@ -15,12 +15,13 @@ COPY service/ranking-service/pom.xml ./service/ranking-service/pom.xml
 COPY service/review-service/pom.xml ./service/review-service/pom.xml
 COPY service/search-service/pom.xml ./service/search-service/pom.xml
 COPY service/user-service/pom.xml ./service/user-service/pom.xml
-COPY service/notification-service ./service/notification-service
+COPY service/coupon-service/coupon-core ./service/coupon-service/coupon-core
+COPY service/coupon-service/coupon-worker ./service/coupon-service/coupon-worker
 RUN --mount=type=cache,target=/root/.m2 \
-    mvn -pl service/notification-service -am package -DskipTests
+    mvn -pl service/coupon-service/coupon-worker -am package -DskipTests
 
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
-COPY --from=build /app/service/notification-service/target/*.jar app.jar
-EXPOSE 9005
+COPY --from=build /app/service/coupon-service/coupon-worker/target/*.jar app.jar
+EXPOSE 9010
 ENTRYPOINT ["java", "-jar", "app.jar"]
