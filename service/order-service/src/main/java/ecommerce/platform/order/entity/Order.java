@@ -84,4 +84,12 @@ public class Order {
         this.orderStatus = OrderStatus.PAID;
         this.paymentMethod = paymentMethod;
     }
+
+    public void cancel() {
+        this.orderStatus = OrderStatus.CANCELLED;
+    }
+
+    public boolean isCancellable() {
+        return this.orderStatus != OrderStatus.PAID && this.orderStatus != OrderStatus.CANCELLED;
+    }
 }
