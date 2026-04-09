@@ -5,10 +5,10 @@ import ecommerce.platform.coupon.dto.PromotionQueryResponse;
 import ecommerce.platform.coupon.entity.Promotion;
 import ecommerce.platform.coupon.repository.PromotionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -16,11 +16,9 @@ import java.util.List;
 public class PromotionQueryService {
     private final PromotionRepository promotionRepository;
 
-    public List<PromotionQueryResponse> getAllPromotions() {
-        return promotionRepository.findAll()
-                .stream()
-                .map(PromotionQueryResponse::from)
-                .toList();
+    public Page<PromotionQueryResponse> getAllPromotions(Pageable pageable) {
+        return promotionRepository.findAll(pageable)
+                .map(PromotionQueryResponse::from);
     }
 
     public PromotionQueryResponse getPromotion(Long promotionId) {

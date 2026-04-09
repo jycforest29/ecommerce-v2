@@ -8,10 +8,11 @@ import ecommerce.platform.payment.service.PaymentManageService;
 import ecommerce.platform.payment.service.PaymentQueryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequestMapping("/api/v1/payments")
 @RequiredArgsConstructor
@@ -31,8 +32,10 @@ public class PaymentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PaymentQueryResponse>> getPayments(@Login Long userId) {
-        List<PaymentQueryResponse> responses = paymentQueryService.queryPayments(userId);
+    public ResponseEntity<Page<PaymentQueryResponse>> getPayments(
+            @Login Long userId,
+            @PageableDefault(size = 20, sort = "createdAt", direction = org.springframework.data.domain.Sort.Direction.DESC) Pageable pageable) {
+        Page<PaymentQueryResponse> responses = paymentQueryService.queryPayments(userId, pageable);
         return ResponseEntity.ok(responses);
     }
 

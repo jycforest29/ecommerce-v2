@@ -8,6 +8,8 @@ import ecommerce.platform.order.entity.OrderItem;
 import ecommerce.platform.order.repository.OrderItemRepository;
 import ecommerce.platform.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,17 +25,15 @@ public class OrderQueryService {
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
 
-    public List<OrderQueryResponse> queryOrders(Long userId) {
-        List<Order> orders = orderRepository.findAllByUserId(userId);
+    public Page<OrderQueryResponse> queryOrders(Long userId, Pageable pageable) {
+        Page<Order> orders = orderRepository.findAllByUserId(userId, pageable);
 
-        List<Long> orderIds = orders.stream().map(Order::getId).toList();
+        List<Long> orderIds = orders.getContent().stream().map(Order::getId).toList();
         Map<Long, List<OrderItem>> orderItemMap = orderItemRepository.findByOrderIdIn(orderIds)
                 .stream()
                 .collect(Collectors.groupingBy(item -> item.getOrder().getId()));
 
-        return orders.stream()
-                .map(order -> OrderQueryResponse.from(order, orderItemMap.getOrDefault(order.getId(), List.of())))
-                .toList();
+        return orders.map(order -> OrderQueryResponse.from(order, orderItemMap.getOrDefault(order.getId(), List.of())));
     }
 
     public OrderQueryResponse queryOrder(Long userId, Long orderId) {

@@ -10,10 +10,11 @@ import ecommerce.platform.coupon.service.ProductManageService;
 import ecommerce.platform.coupon.service.ProductQueryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequestMapping("/api/v1/products")
 @RequiredArgsConstructor
@@ -41,8 +42,9 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductQueryResponse>> queryProducts() {
-        List<ProductQueryResponse> responses = productQueryService.queryProducts();
+    public ResponseEntity<Page<ProductQueryResponse>> queryProducts(
+            @PageableDefault(size = 20, sort = "createdAt", direction = org.springframework.data.domain.Sort.Direction.DESC) Pageable pageable) {
+        Page<ProductQueryResponse> responses = productQueryService.queryProducts(pageable);
         return ResponseEntity.ok(responses);
     }
 

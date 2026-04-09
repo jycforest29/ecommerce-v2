@@ -7,6 +7,8 @@ import ecommerce.platform.payment.dto.PaymentQueryResponse;
 import ecommerce.platform.payment.entity.Payment;
 import ecommerce.platform.payment.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,12 +21,9 @@ public class PaymentQueryService {
 
     private final PaymentRepository paymentRepository;
 
-    public List<PaymentQueryResponse> queryPayments(Long userId) {
-        List<Payment> payments = paymentRepository.findAllByUserId(userId);
-
-        return payments.stream()
-                .map(PaymentQueryResponse::from)
-                .toList();
+    public Page<PaymentQueryResponse> queryPayments(Long userId, Pageable pageable) {
+        return paymentRepository.findAllByUserId(userId, pageable)
+                .map(PaymentQueryResponse::from);
     }
 
     public PaymentQueryResponse queryPayment(Long userId, Long paymentId) {

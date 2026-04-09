@@ -8,10 +8,11 @@ import ecommerce.platform.order.service.OrderManageService;
 import ecommerce.platform.order.service.OrderQueryService;
 import lombok.RequiredArgsConstructor;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequestMapping("/api/v1/orders")
 @RequiredArgsConstructor
@@ -28,8 +29,10 @@ public class OrderController {
     }
 
     @GetMapping
-    public ResponseEntity<List<OrderQueryResponse>> queryOrders(@Login Long userId) {
-        List<OrderQueryResponse> orderQueryResponses = orderQueryService.queryOrders(userId);
+    public ResponseEntity<Page<OrderQueryResponse>> queryOrders(
+            @Login Long userId,
+            @PageableDefault(size = 20, sort = "createdAt", direction = org.springframework.data.domain.Sort.Direction.DESC) Pageable pageable) {
+        Page<OrderQueryResponse> orderQueryResponses = orderQueryService.queryOrders(userId, pageable);
         return ResponseEntity.ok(orderQueryResponses);
     }
 
