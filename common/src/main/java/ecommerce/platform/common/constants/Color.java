@@ -12,9 +12,4 @@ public enum Color implements ProductOption<Color>{
     BROWN,
     BLUE,
     NAVY;
-
-    @Override
-    public boolean equalsTo(Color color) {
-        return color == this;
-    }
 }

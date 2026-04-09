@@ -57,7 +57,7 @@ public class Coupon {
         final int minPurchaseAmount = promotion.getMinPurchaseAmount();
 
         int totalPrice = orderItems.stream()
-                .filter(orderItem -> brand.equalsTo(orderItem.getBrand()) && category.equalsTo(orderItem.getCategory()))
+                .filter(orderItem -> brand.equals(orderItem.getBrand()) && category.equals(orderItem.getCategory()))
                 .mapToInt(orderItem -> orderItem.getPrice() * orderItem.getQuantity())
                 .sum();
 
@@ -70,7 +70,7 @@ public class Coupon {
         final int maxDiscountAmount = promotion.getMaxDiscountAmount();
 
         int targetPrice = orderItems.stream()
-                .filter(orderItem -> brand.equalsTo(orderItem.getBrand()) && category.equalsTo(orderItem.getCategory()))
+                .filter(orderItem -> brand.equals(orderItem.getBrand()) && category.equals(orderItem.getCategory()))
                 .mapToInt(orderItem -> orderItem.getPrice() * orderItem.getQuantity())
                 .sum();
 

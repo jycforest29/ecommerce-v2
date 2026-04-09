@@ -1,7 +1,6 @@
 package ecommerce.platform.common.constants;
 
 public enum Brand implements ProductOption<Brand> {
-    ALL,
     A,
     B,
     C,
@@ -16,9 +15,4 @@ public enum Brand implements ProductOption<Brand> {
     M,
     N,
     O;
-
-    @Override
-    public boolean equalsTo(Brand target) {
-        return this == Brand.ALL || this == target;
-    }
 }

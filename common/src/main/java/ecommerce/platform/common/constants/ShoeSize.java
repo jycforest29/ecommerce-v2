@@ -13,9 +13,4 @@ public enum ShoeSize implements ProductOption<ShoeSize> {
     ShoeSize(int sizeValue) {
         this.sizeValue = sizeValue;
     }
-
-    @Override
-    public boolean equalsTo(ShoeSize shoeSize) {
-        return shoeSize == this;
-    }
 }

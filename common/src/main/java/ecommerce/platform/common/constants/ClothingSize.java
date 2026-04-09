@@ -6,9 +6,4 @@ public enum ClothingSize implements ProductOption<ClothingSize>{
     M,
     L,
     XL;
-
-    @Override
-    public boolean equalsTo(ClothingSize clothingSize) {
-        return clothingSize == this;
-    }
 }
