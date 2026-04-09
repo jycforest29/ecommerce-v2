@@ -1,5 +1,6 @@
 package ecommerce.platform.coupon.service;
 
+import ecommerce.platform.common.exception.UnauthorizedAccessException;
 import ecommerce.platform.common.util.EntityFinder;
 import ecommerce.platform.coupon.dto.PromotionRegisterRequest;
 import ecommerce.platform.coupon.dto.PromotionRegisterResponse;
@@ -18,9 +19,10 @@ public class PromotionManageService {
     private final PromotionRepository promotionRepository;
     private final RedisTemplate<String, Object> couponRedisRepository;
 
+    // WHAT: Redis에 쿠폰 quantity 만큼 등록
     @Transactional
-    public PromotionRegisterResponse register(PromotionRegisterRequest promotionRegisterRequest) {
-        Promotion promotion = promotionRegisterRequest.toEntity();
+    public PromotionRegisterResponse register(Long userId, PromotionRegisterRequest promotionRegisterRequest) {
+        Promotion promotion = promotionRegisterRequest.toEntity(userId);
         promotionRepository.save(promotion);
         String key = RedisKeyConverterUtil.toKey(promotion);
 
@@ -38,8 +40,11 @@ public class PromotionManageService {
     }
 
     @Transactional
-    public void remove(Long promotionId) {
+    public void remove(Long userId, Long promotionId) {
         Promotion promotion = EntityFinder.findEntity(promotionRepository, promotionId);
+        if (!promotion.getCreatedBy().equals(userId)) {
+            throw new UnauthorizedAccessException();
+        }
         String key = RedisKeyConverterUtil.toKey(promotion);
         couponRedisRepository.delete(key);
         couponRedisRepository.delete(key + "::random");

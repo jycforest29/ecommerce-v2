@@ -55,6 +55,9 @@ public class Promotion {
     @Column(nullable = false)
     private Instant endedAt;
 
+    @Column(nullable = false)
+    private Long createdBy;
+
     @Enumerated(EnumType.STRING)
     private Category category;
 
@@ -66,7 +69,7 @@ public class Promotion {
                      int discountRate, boolean randomDiscount, int minDiscountRate, int maxDiscountRate,
                      int minPurchaseAmount, int maxDiscountAmount,
                      Instant startedAt, Instant endedAt,
-                     Category category, Brand brand) {
+                     Long createdBy, Category category, Brand brand) {
         this.promotionName = promotionName;
         this.quantity = quantity;
         this.expireDays = expireDays;
@@ -78,6 +81,7 @@ public class Promotion {
         this.maxDiscountAmount = maxDiscountAmount;
         this.startedAt = startedAt;
         this.endedAt = endedAt;
+        this.createdBy = createdBy;
         this.category = category;
         this.brand = brand;
     }
