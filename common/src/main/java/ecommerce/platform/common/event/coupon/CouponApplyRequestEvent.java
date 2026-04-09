@@ -1,12 +1,15 @@
 package ecommerce.platform.common.event.coupon;
 
 import ecommerce.platform.common.event.Event;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class CouponApplyRequestEvent extends Event {
     public static final String TOPIC = "coupon.events.apply_request";
@@ -21,17 +24,14 @@ public class CouponApplyRequestEvent extends Event {
     }
 
     @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
     public static class OrderItemInfo {
         private Long productId;
         private Long optionId;
         private int price;
         private int quantity;
-
-        protected OrderItemInfo() {}
     }
-
-    protected CouponApplyRequestEvent() {}
 
     @Builder
     CouponApplyRequestEvent(Long orderId, Long userId, List<OrderItemInfo> orderItemInfos) {

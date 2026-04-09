@@ -1,12 +1,12 @@
 package ecommerce.platform.common.event.coupon;
 
 import ecommerce.platform.common.event.Event;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.List;
+import java.util.logging.Level;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class CouponAppliedEvent extends Event {
     public static final String TOPIC = "coupon.events.applied";
@@ -23,6 +23,7 @@ public class CouponAppliedEvent extends Event {
     }
 
     @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
     public static class OrderItemInfo {
         private Long productId;
@@ -33,14 +34,11 @@ public class CouponAppliedEvent extends Event {
         private int priceAfterCouponApplied;
         private int discountRate;
 
-        protected OrderItemInfo() {}
-
         public boolean matches(Long productId, Long optionId) {
+            // product랑 option이 같으면 같은 객체
             return this.productId.equals(productId) && this.optionId.equals(optionId);
         }
     }
-
-    protected CouponAppliedEvent() {}
 
     @Builder
     CouponAppliedEvent(Long orderId, Long couponId, int discountRate, int discountAmount, List<CouponAppliedEvent.OrderItemInfo> orderItemInfos) {

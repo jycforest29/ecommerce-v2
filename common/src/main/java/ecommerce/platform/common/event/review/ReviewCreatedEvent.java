@@ -1,15 +1,24 @@
 package ecommerce.platform.common.event.review;
 
+import ecommerce.platform.common.event.Event;
+import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-public class ReviewCreatedEvent extends ReviewEvent {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+public class ReviewCreatedEvent extends Event {
     public static final String TOPIC = "review.events.created";
 
-    protected ReviewCreatedEvent() {}
+    private Long productId;
+    private int averageScore;
 
     @Builder
     public ReviewCreatedEvent(Long productId, int averageScore) {
-        super(productId, averageScore);
+        super();
+        this.productId = productId;
+        this.averageScore = averageScore;
     }
 
     @Override

@@ -1,14 +1,17 @@
 package ecommerce.platform.common.event.order;
 
 import ecommerce.platform.common.event.Event;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import ecommerce.platform.common.constants.Category;
 
 import java.util.List;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class OrderCreatedEvent extends Event {
     public static final String TOPIC = "order.events.created";
@@ -16,8 +19,6 @@ public class OrderCreatedEvent extends Event {
     private Long orderId;
     private Long userId;
     private List<OrderItemInfo> orderItemInfos;
-
-    protected OrderCreatedEvent() {}
 
     @Builder
     OrderCreatedEvent(Long orderId, Long userId, List<OrderItemInfo> orderItemInfos) {
@@ -33,6 +34,7 @@ public class OrderCreatedEvent extends Event {
     }
 
     @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
     public static class OrderItemInfo {
         private Long productId;
@@ -40,7 +42,5 @@ public class OrderCreatedEvent extends Event {
         private String productName;
         private Long imageId;
         private Category category;
-
-        protected OrderItemInfo() {}
     }
 }

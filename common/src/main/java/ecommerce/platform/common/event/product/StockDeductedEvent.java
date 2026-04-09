@@ -1,19 +1,20 @@
 package ecommerce.platform.common.event.product;
 
 import ecommerce.platform.common.event.Event;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class StockDeductedEvent extends Event {
     public static final String TOPIC = "stock.events.deducted";
     private Long orderId;
     private List<StockInfo> stockInfos;
-
-    protected StockDeductedEvent() {}
 
     @Builder
     StockDeductedEvent(Long orderId, List<StockInfo> stockInfos) {
@@ -28,12 +29,11 @@ public class StockDeductedEvent extends Event {
     }
 
     @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
     public static class StockInfo {
         private Long productId;
         private Long optionId;
         private boolean available;
-
-        protected StockInfo() {}
     }
 }

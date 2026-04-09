@@ -1,21 +1,30 @@
 package ecommerce.platform.common.event.notification;
 
+import ecommerce.platform.common.event.Event;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class DeliveryCompletedNotificationEvent extends NotificationEvent {
+public class DeliveryCompletedNotificationEvent extends Event {
     public static final String TOPIC = "notification.events.delivery_completed";
+
+    private Long userId;
+    private String title;
+    private String body;
 
     @Override
     public String getTopic() {
         return TOPIC;
     }
 
-    protected DeliveryCompletedNotificationEvent() {}
-
     @Builder
     public DeliveryCompletedNotificationEvent(Long userId, String title, String body) {
-        super(userId, title, body);
+        super();
+        this.userId = userId;
+        this.title = title;
+        this.body = body;
     }
 }

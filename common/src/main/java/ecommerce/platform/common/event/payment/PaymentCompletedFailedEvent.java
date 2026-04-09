@@ -1,9 +1,12 @@
 package ecommerce.platform.common.event.payment;
 
 import ecommerce.platform.common.event.Event;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class PaymentCompletedFailedEvent extends Event {
     public static final String TOPIC = "payment.events.completed_failed";
@@ -11,8 +14,6 @@ public class PaymentCompletedFailedEvent extends Event {
     private Long orderId;
     private Long paymentId;
     private String reason;
-
-    protected PaymentCompletedFailedEvent() {}
 
     @Builder
     PaymentCompletedFailedEvent(Long orderId, Long paymentId, String reason) {

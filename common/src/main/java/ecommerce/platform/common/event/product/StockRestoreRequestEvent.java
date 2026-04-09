@@ -1,19 +1,20 @@
 package ecommerce.platform.common.event.product;
 
 import ecommerce.platform.common.event.Event;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class StockRestoreRequestEvent extends Event {
     public static final String TOPIC = "stock.events.restore_request";
     private Long orderId;
     private List<StockDeductRequestEvent.StockInfo> stockInfos;
-
-    protected StockRestoreRequestEvent() {}
 
     @Builder
     StockRestoreRequestEvent(Long orderId, List<StockDeductRequestEvent.StockInfo> stockInfos) {

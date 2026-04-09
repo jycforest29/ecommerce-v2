@@ -2,9 +2,12 @@ package ecommerce.platform.common.event.payment;
 
 import ecommerce.platform.common.constants.PaymentMethod;
 import ecommerce.platform.common.event.Event;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class PaymentRequestEvent extends Event {
     public static final String TOPIC = "payment.events.request";
@@ -14,8 +17,6 @@ public class PaymentRequestEvent extends Event {
     private PaymentMethod paymentMethod;
     private int discountPrice;
     private int totalPrice;
-
-    protected PaymentRequestEvent() {}
 
     @Builder
     PaymentRequestEvent(Long orderId, Long userId, PaymentMethod paymentMethod, int discountPrice, int totalPrice) {
