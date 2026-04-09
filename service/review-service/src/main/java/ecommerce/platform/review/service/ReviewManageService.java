@@ -1,17 +1,20 @@
 package ecommerce.platform.review.service;
 
+import ecommerce.platform.common.event.Event;
+import ecommerce.platform.common.event.OutboxEvent;
 import ecommerce.platform.common.event.review.ReviewCreatedEvent;
 import ecommerce.platform.common.event.review.ReviewDeletedEvent;
 import ecommerce.platform.common.exception.UnauthorizedAccessException;
 import ecommerce.platform.common.util.EntityFinder;
+import ecommerce.platform.common.util.OutboxEventGenerator;
 import ecommerce.platform.review.dto.ReviewCreateRequest;
 import ecommerce.platform.review.dto.ReviewCreateResponse;
 import ecommerce.platform.review.dto.ReviewUpdateRequest;
 import ecommerce.platform.review.dto.ReviewUpdateResponse;
 import ecommerce.platform.review.entity.Review;
+import ecommerce.platform.review.repository.OutboxEventRepository;
 import ecommerce.platform.review.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +25,7 @@ public class ReviewManageService {
     private final ReviewRepository reviewRepository;
     private final ReviewScoreUpdater reviewScoreUpdater;
     private final PurchaseVerifier purchaseVerifier;
-    private final KafkaTemplate<String, Object> kafkaTemplate;
+    private final OutboxEventRepository outboxEventRepository;
 
     @Transactional
     public ReviewCreateResponse createReview(Long userId, ReviewCreateRequest request) {
@@ -34,7 +37,7 @@ public class ReviewManageService {
         reviewRepository.save(review);
 
         reviewScoreUpdater.addScore(review.getProductId(), review.getScore().getRateScore());
-        kafkaTemplate.send(ReviewCreatedEvent.TOPIC, ReviewCreatedEvent.builder()
+        publishEvent(ReviewCreatedEvent.builder()
                 .productId(review.getProductId())
                 .averageScore(reviewScoreUpdater.getAverageScore(review.getProductId()))
                 .build());
@@ -48,7 +51,7 @@ public class ReviewManageService {
         validateOwner(review, userId);
 
         int oldScore = review.getScore().getRateScore();
-        review.modify(request.imageId(), request.title(), request.content(), request.score());
+        review.modify(request.imageUrl(), request.title(), request.content(), request.score());
         int newScore = request.score().getRateScore();
 
         reviewScoreUpdater.removeScore(review.getProductId(), oldScore);
@@ -64,7 +67,7 @@ public class ReviewManageService {
         review.delete();
 
         reviewScoreUpdater.removeScore(review.getProductId(), review.getScore().getRateScore());
-        kafkaTemplate.send(ReviewDeletedEvent.TOPIC, ReviewDeletedEvent.builder()
+        publishEvent(ReviewDeletedEvent.builder()
                 .productId(review.getProductId())
                 .averageScore(reviewScoreUpdater.getAverageScore(review.getProductId()))
                 .build());
@@ -74,5 +77,10 @@ public class ReviewManageService {
         if (!review.writtenBy(userId)) {
             throw new UnauthorizedAccessException();
         }
+    }
+
+    private void publishEvent(Event event) {
+        OutboxEvent outboxEvent = OutboxEventGenerator.publish(event);
+        outboxEventRepository.save(outboxEvent);
     }
 }
