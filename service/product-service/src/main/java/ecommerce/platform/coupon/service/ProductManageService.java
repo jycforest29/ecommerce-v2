@@ -49,8 +49,12 @@ public class ProductManageService {
     @Transactional
     public void deductStock(Long orderId, List<StockDeductRequestEvent.StockInfo> stockInfos) {
         for (StockDeductRequestEvent.StockInfo stockInfo : stockInfos) {
-            ProductOption option = EntityFinder.findEntity(productOptionRepository, stockInfo.getOptionId());
-            option.deductStock(stockInfo.getQuantity());
+            int updatedRows = productOptionRepository.deductStockConditionally(
+                    stockInfo.getOptionId(), stockInfo.getQuantity());
+            if (updatedRows == 0) {
+                throw new IllegalStateException(
+                        "재고 차감 실패 - optionId: " + stockInfo.getOptionId() + ", quantity: " + stockInfo.getQuantity());
+            }
         }
     }
 
