@@ -23,5 +23,5 @@ RUN --mount=type=cache,target=/root/.m2 \
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 COPY --from=build /app/service/coupon-service/coupon-worker/target/*.jar app.jar
-EXPOSE 9010
+EXPOSE 9001
 ENTRYPOINT ["java", "-jar", "app.jar"]
