@@ -5,6 +5,7 @@ import ecommerce.platform.common.event.OutboxEvent;
 import ecommerce.platform.common.event.order.OrderCancelledEvent;
 import ecommerce.platform.common.event.payment.PaymentCancelledEvent;
 import ecommerce.platform.common.event.payment.PaymentCompletedEvent;
+import ecommerce.platform.common.event.payment.PaymentFailedEvent;
 import ecommerce.platform.common.event.payment.PaymentRequestEvent;
 import ecommerce.platform.common.exception.EntityNotFoundException;
 import ecommerce.platform.payment.controller.PGMockController;
@@ -36,8 +37,11 @@ public class PaymentEventHandler {
     private void handlePaymentRequest(PaymentRequestEvent event) {
         PGMockController.PGResponse pgResponse = pgClient.requestPayment();
         if (!pgResponse.success()) {
-            // TODO: 보상 트랜잭션 - PaymentFailedEvent 발행
-            throw new RuntimeException(pgResponse.message());
+            publishEvent(PaymentFailedEvent.builder()
+                    .orderId(event.getOrderId())
+                    .reason(pgResponse.message())
+                    .build());
+            return;
         }
 
         Payment payment = Payment.builder()
