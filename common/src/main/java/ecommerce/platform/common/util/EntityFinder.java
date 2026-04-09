@@ -14,11 +14,4 @@ public class EntityFinder {
                 .orElseThrow(() -> new EntityNotFoundException());
     }
 
-    public static <T, V, R> List<R> findAllAndMapTo(JpaRepository<T, V> repository, Function<T, R> function) {
-        return repository.findAll()
-                .stream()
-                .map(function)
-                .toList();
-    }
-
 }

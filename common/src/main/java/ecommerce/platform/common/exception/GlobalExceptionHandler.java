@@ -26,15 +26,6 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        String message = e.getBindingResult().getFieldErrors().stream()
-                .map(error -> error.getField() + ": " + error.getDefaultMessage())
-                .findFirst()
-                .orElse("입력값이 유효하지 않습니다.");
-        return buildResponse(HttpStatus.BAD_REQUEST, message);
-    }
-
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<ErrorResponse> handleIllegalStateException(IllegalStateException e) {
         return buildResponse(HttpStatus.CONFLICT, e.getMessage());
@@ -45,6 +36,16 @@ public class GlobalExceptionHandler {
         log.error("예상치 못한 오류 발생", e);
         return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류가 발생했습니다.");
     }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        String message = e.getBindingResult().getFieldErrors().stream()
+                .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                .findFirst()
+                .orElse("입력값이 유효하지 않습니다.");
+        return buildResponse(HttpStatus.BAD_REQUEST, message);
+    }
+
 
     private ResponseEntity<ErrorResponse> buildResponse(HttpStatus status, String message) {
         return ResponseEntity.status(status).body(ErrorResponse.of(status.value(), message));
