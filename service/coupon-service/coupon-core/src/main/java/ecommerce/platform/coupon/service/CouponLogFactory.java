@@ -18,6 +18,10 @@ public class CouponLogFactory {
         return create(coupon, CouponStatus.APPLY_CANCELLED);
     }
 
+    public static CouponLog expire(Coupon coupon) {
+        return create(coupon, CouponStatus.EXPIRED);
+    }
+
     public static CouponLog deactivate(Coupon coupon) {
         return create(coupon, CouponStatus.DEACTIVATED);
     }
