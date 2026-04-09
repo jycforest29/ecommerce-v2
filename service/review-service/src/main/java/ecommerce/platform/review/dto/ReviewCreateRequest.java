@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record ReviewCreateRequest(
         @NotNull Long productId,
-        Long imageId,
+        String imageUrl,
         @NotBlank String title,
         @NotBlank String content,
         @NotNull ReviewScore score
@@ -16,7 +16,7 @@ public record ReviewCreateRequest(
         return Review.builder()
                 .productId(productId)
                 .userId(userId)
-                .imageId(imageId)
+                .imageUrl(imageUrl)
                 .title(title)
                 .content(content)
                 .score(score)

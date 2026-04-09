@@ -22,7 +22,7 @@ public class Review {
     private Long userId;
 
     @Column(nullable = true)
-    private Long imageId;
+    private String imageUrl;
 
     @Column(nullable = false)
     private String title;
@@ -44,19 +44,19 @@ public class Review {
     private Instant deletedAt;
 
     @Builder
-    public Review(Long productId, Long userId, Long imageId, String title,
+    public Review(Long productId, Long userId, String imageUrl, String title,
                   String content, ReviewScore score) {
         this.productId = productId;
         this.userId = userId;
-        this.imageId = imageId;
+        this.imageUrl = imageUrl;
         this.title = title;
         this.content = content;
         this.score = score;
         this.createdAt = Instant.now();
     }
 
-    public void modify(Long imageId, String title, String content, ReviewScore score) {
-        this.imageId = imageId;
+    public void modify(String imageUrl, String title, String content, ReviewScore score) {
+        this.imageUrl = imageUrl;
         this.title = title;
         this.content = content;
         this.score = score;

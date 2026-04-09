@@ -7,7 +7,7 @@ import java.time.Instant;
 
 public record ReviewUpdateResponse(
         Long reviewId,
-        Long imageId,
+        String imageUrl,
         String title,
         String content,
         ReviewScore score,
@@ -16,7 +16,7 @@ public record ReviewUpdateResponse(
     public static ReviewUpdateResponse from(Review review) {
         return new ReviewUpdateResponse(
                 review.getId(),
-                review.getImageId(),
+                review.getImageUrl(),
                 review.getTitle(),
                 review.getContent(),
                 review.getScore(),

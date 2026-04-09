@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record ReviewUpdateRequest(
-        Long imageId,
+        String imageUrl,
         @NotBlank String title,
         @NotBlank String content,
         @NotNull ReviewScore score

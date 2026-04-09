@@ -11,7 +11,7 @@ public record ReviewQueryResponse(
         Long reviewId,
         Long productId,
         Long userId,
-        Long imageId,
+        String imageUrl,
         String title,
         String content,
         ReviewScore score,
@@ -23,7 +23,7 @@ public record ReviewQueryResponse(
                 .reviewId(review.getId())
                 .productId(review.getProductId())
                 .userId(review.getUserId())
-                .imageId(review.getImageId())
+                .imageUrl(review.getImageUrl())
                 .title(review.getTitle())
                 .content(review.getContent())
                 .score(review.getScore())
