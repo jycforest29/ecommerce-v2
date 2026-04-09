@@ -1,22 +1,35 @@
 package ecommerce.platform.payment.service;
 
 import ecommerce.platform.common.event.Event;
+import ecommerce.platform.common.event.ProcessedEvent;
 import ecommerce.platform.common.event.order.OrderCancelledEvent;
 import ecommerce.platform.common.event.payment.PaymentRequestEvent;
+import ecommerce.platform.payment.repository.ProcessedEventRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class EventConsumer {
 
     private final PaymentEventHandler paymentEventHandler;
+    private final ProcessedEventRepository processedEventRepository;
 
+    @Transactional
     @KafkaListener(topics = {PaymentRequestEvent.TOPIC, OrderCancelledEvent.TOPIC})
     public void handleEvent(Event event, Acknowledgment ack) {
+        if (processedEventRepository.existsByEventId(event.getEventId())) {
+            log.info("중복 이벤트 무시 - eventId: {}", event.getEventId());
+            ack.acknowledge();
+            return;
+        }
         paymentEventHandler.handle(event);
+        processedEventRepository.save(new ProcessedEvent(event.getEventId()));
         ack.acknowledge();
     }
 }

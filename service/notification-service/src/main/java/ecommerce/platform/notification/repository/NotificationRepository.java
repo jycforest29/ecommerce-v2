@@ -19,4 +19,6 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 
     @Query("SELECT COUNT(n) FROM Notification n WHERE n.userId = :userId AND n.readAt IS null")
     int countByUserIdUnread(@Param("userId") Long userId);
+
+    boolean existsByDedupeKey(String dedupeKey);
 }

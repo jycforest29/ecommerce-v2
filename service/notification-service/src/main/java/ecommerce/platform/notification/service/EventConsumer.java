@@ -27,6 +27,11 @@ public class EventConsumer {
             ProductRestockedNotificationEvent.TOPIC
     })
     public void handleEvent(NotificationEvent event, Acknowledgment ack) {
+        if (notificationRepository.existsByDedupeKey(event.getEventId())) {
+            ack.acknowledge();
+            return;
+        }
+
         NotificationType notificationType = NotificationType.fromEvent(event);
 
         Notification notification = Notification.builder()
