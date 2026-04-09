@@ -28,6 +28,9 @@ public class OutboxEvent {
     private boolean isPublished;
 
     @Column(nullable = false)
+    private int retryCount;
+
+    @Column(nullable = false)
     private Instant createdAt;
 
     @Builder
@@ -36,10 +39,15 @@ public class OutboxEvent {
         this.entityId = entityId;
         this.payload = payload;
         this.isPublished = false;
+        this.retryCount = 0;
         this.createdAt = Instant.now();
     }
 
     public void markPublished() {
         this.isPublished = true;
+    }
+
+    public void incrementRetryCount() {
+        this.retryCount++;
     }
 }

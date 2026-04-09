@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface OutboxEventRepository extends JpaRepository<OutboxEvent, Long> {
     List<OutboxEvent> findByIsPublishedFalse();
+
+    List<OutboxEvent> findByIsPublishedFalseAndRetryCountLessThan(int maxRetryCount);
 }

@@ -1,4 +1,4 @@
-package ecommerce.platform.order.repository;
+package ecommerce.platform.review.repository;
 
 import ecommerce.platform.common.event.OutboxEvent;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,7 +1,7 @@
-package ecommerce.platform.order.service;
+package ecommerce.platform.review.service;
 
 import ecommerce.platform.common.event.OutboxEvent;
-import ecommerce.platform.order.repository.OutboxEventRepository;
+import ecommerce.platform.review.repository.OutboxEventRepository;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
