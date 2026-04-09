@@ -60,6 +60,7 @@ public class CouponApplyService {
         rollbackInternal(coupon);
     }
 
+    // JY: API 말고 Event로 사용 호출
     @Transactional
     public void applyFromOrder(CouponApplyRequestEvent event) {
         List<Coupon> coupons = couponRepository.findAllByUserId(event.getUserId());
@@ -90,7 +91,11 @@ public class CouponApplyService {
 
     @Transactional
     public void rollbackApplyFromOrder(CouponRollbackApplyEvent event) {
-        // saga 보상 트랜잭션: 주문 취소 시 쿠폰 적용 해제
+        if (event.getCouponId() == null) {
+            return;
+        }
+        final var coupon = EntityFinder.findEntity(couponRepository, event.getCouponId());
+        rollbackInternal(coupon);
     }
 
     private void applyInternal(Coupon coupon) {

@@ -108,6 +108,7 @@ public class OrderSagaHandler {
 
         publishEvent(CouponRollbackApplyEvent.builder()
                 .orderId(order.getId())
+                .couponId(order.getCouponId())
                 .build());
     }
 
@@ -130,6 +131,7 @@ public class OrderSagaHandler {
 
         publishEvent(CouponRollbackApplyEvent.builder()
                 .orderId(order.getId())
+                .couponId(order.getCouponId())
                 .build());
     }
 
